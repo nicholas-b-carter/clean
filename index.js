@@ -40,7 +40,9 @@ console.log(intents);
 intents.matches('smalltalk.greetings', (session, args) => {
   console.log('smalltalk.greetings');
   // hopefully this lets up persist the session data; session persistence
-  session.conversationData = (session.conversationData || []).push(session.message);
+  const data = session.conversationData || [];
+  data.push(session.message);
+  session.conversationData = data;
   // if allowed will show the user is typing thing :)
   session.sendTyping();
   // fulfillment is the reponse from api-ai if a domain has generated a response, which we can just
@@ -51,7 +53,9 @@ intents.matches('smalltalk.greetings', (session, args) => {
 
 // input.unknown is the action/intent returned from api-ai for this message
 intents.matches('input.unknown', (session, args) => {
-  session.conversationData = (session.conversationData || []).push(session.message);
+  const data = session.conversationData || [];
+  data.push(session.message);
+  session.conversationData = data;
   console.log('input.unknown');
 });
 
