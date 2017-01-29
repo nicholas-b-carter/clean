@@ -33,6 +33,7 @@ const intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // tell the bot to pass intents to the bot builder intents
 bot.dialog('/', intents);
+console.log(intents);
 
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
@@ -57,6 +58,8 @@ intents.matches('input.unknown', (session, args) => {
 // this is the onDefault intent method which is part of bot framework
 intents.onDefault((session) => {
   console.log('defaulted');
-  session.conversationData = (session.conversationData || []).push(session.message);
+  const data = session.conversationData || [];
+  data.push(session.message);
+  session.conversationData = data;
   session.send('Sorry...can you please rephrase?');
 });
