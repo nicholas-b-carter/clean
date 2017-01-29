@@ -1,0 +1,14 @@
+{
+  "name": "sysco-assist",
+  "version": "1.0.0",
+  "description": "Sysco Assist POC",
+  "main": "index.js",
+  "author": "Nick Carter <nicholas.b.carter@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "api-ai-recognizer": "^1.0.1",
+    "botbuilder": "^3.5.4",
+    "nodemon": "^1.11.0",
+    "restify": "^4.3.0"
+  }
+}
