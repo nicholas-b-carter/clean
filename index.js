@@ -37,7 +37,7 @@ bot.dialog('/', intents);
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
 intents.matches('smalltalk.greetings', (session, args) => {
-  console.log('smalltalk.greetings', session, args);
+  console.log('smalltalk.greetings');
   // hopefully this lets up persist the session data; session persistence
   session.conversationData = (session.conversationData || []).push(session.message);
   // if allowed will show the user is typing thing :)
@@ -51,11 +51,12 @@ intents.matches('smalltalk.greetings', (session, args) => {
 // input.unknown is the action/intent returned from api-ai for this message
 intents.matches('input.unknown', (session, args) => {
   session.conversationData = (session.conversationData || []).push(session.message);
-  console.log('input.unknown', session, args);
+  console.log('input.unknown');
 });
 
 // this is the onDefault intent method which is part of bot framework
 intents.onDefault((session) => {
-  console.log('defaulted', session);
+  console.log('defaulted');
+  session.conversationData = (session.conversationData || []).push(session.message);
   session.send('Sorry...can you please rephrase?');
 });
