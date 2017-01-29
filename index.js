@@ -1,7 +1,7 @@
 const builder = require('botbuilder');
 const restify = require('restify');
 const apiairecognizer = require('api-ai-recognizer');
-
+const order = require('./order');
 //= ========================================================
 // Bot Setup
 //= ========================================================
@@ -49,25 +49,22 @@ const buildFulfillment = (args) => {
 
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
-intents.matches('order.create', (session, args) => {
+intents.matches('order.create', (session, { entities }) => {
   session = buildSessionData(session);
-  // session.sendTyping();
-  console.log('creating order flow');
-  console.log('args: ', args);
+  session.sendTyping();
 
-  const entities = builder.EntityRecognizer.findAllEntities(args.entities,
-    ['deliveryDate', 'name', 'quantity', 'quantityUom', 'search', 'fulfillment']);
-  console.log(entities);
+  const orderDetails = {
+    deliveryDate: builder.EntityRecognizer.findEntity(entities, 'deliveryDate'),
+  };
 
-  session.send(buildFulfillment(args));
+  if (orderDetails.deliveryDate) {
+    order.create({ deliveryDate: orderDetails.deliveryDate })
+      .then(response => session.send(response));
+  } else {
+    session.send('must have been a mistake');
+  }
 });
 
-// input.unknown is the action/intent returned from api-ai for this message
-intents.matches('input.unknown', (session, args) => {
-  session = buildSessionData(session);
-  session.send(buildFulfillment(args));
-  console.log('input.unknown');
-});
 
 // this is the onDefault intent method which is part of bot framework
 intents.onDefault((session, args) => {
