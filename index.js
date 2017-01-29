@@ -33,7 +33,6 @@ const intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // tell the bot to pass intents to the bot builder intents
 bot.dialog('/', intents);
-console.log(intents);
 
 const buildSessionData = (session) => {
   let data = session.conversationData || [];
@@ -50,9 +49,16 @@ const buildFulfillment = (args) => {
 
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
-intents.matches('smalltalk.greetings', (session, args) => {
+intents.matches('order.create', (session, args) => {
   session = buildSessionData(session);
   // session.sendTyping();
+  console.log('creating order flow');
+  console.log('args: ', args);
+
+  const entities = builder.EntityRecognizer.findAllEntities(args.entities,
+    ['deliveryDate', 'name', 'quantity', 'quantityUom', 'search', 'fulfillment']);
+  console.log(entities);
+
   session.send(buildFulfillment(args));
 });
 
