@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js *.js --color --fix",
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./index.js",
+    "deploy": "git commit -am 'automated' && git push && git push heroku master && herok"
   },
   "dependencies": {
     "api-ai-recognizer": "^1.0.1",
