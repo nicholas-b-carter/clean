@@ -31,6 +31,9 @@ const recognizer = new apiairecognizer('c95f5a9618fe45acbc1d16a4726ed9e1');
 // setup the bot buolder intentDialog to match the intents passed from api-ai
 const intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
+// tell the bot to pass intents to the bot builder intents
+bot.dialog('/', intents);
+
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
 intents.matches('smalltalk.greetings', (session, args) => {
