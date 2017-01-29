@@ -35,40 +35,37 @@ const intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.dialog('/', intents);
 console.log(intents);
 
+const buildSessionData = (session) => {
+  let data = session.conversationData || [];
+  data = Array.isArray(data) ?
+    data.push(session.message) : Object.assign({}, session.message, session.conversationData);
+  session.conversationData = data;
+  return session;
+};
+
+const buildFulfillment = (args) => {
+  const fulfillment = builder.EntityRecognizer.findEntity(args.entities, 'fulfillment');
+  return fulfillment.entity || 'Sorry...not sure how to respond to that';
+};
+
 // map each intent to the business logic
 // small talk is the small talk domain from api-ai
 intents.matches('smalltalk.greetings', (session, args) => {
-  console.log('smalltalk.greetings');
-  // hopefully this lets up persist the session data; session persistence
-  let data = session.conversationData || [];
-  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
-  session.conversationData = data;
-  // if allowed will show the user is typing thing :)
-  session.sendTyping();
-  // fulfillment is the reponse from api-ai if a domain has generated a response, which we can just
-  // return if we didnt there would be no response.
-  const fulfillment = builder.EntityRecognizer.findEntity(args.entities, 'fulfillment');
-  session.send(fulfillment ? fulfillment.entity : 'Sorry...not sure how to respond to that');
+  session = buildSessionData(session);
+  // session.sendTyping();
+  session.send(buildFulfillment(args));
 });
 
 // input.unknown is the action/intent returned from api-ai for this message
 intents.matches('input.unknown', (session, args) => {
-  let data = session.conversationData || [];
-  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
-  session.conversationData = data;
+  session = buildSessionData(session);
+  session.send(buildFulfillment(args));
   console.log('input.unknown');
 });
 
 // this is the onDefault intent method which is part of bot framework
 intents.onDefault((session, args) => {
-  console.log(args);
-  let data = session.conversationData || [];
-  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
-  session.conversationData = data;
-  // if allowed will show the user is typing thing :)
-  session.sendTyping();
-  // fulfillment is the reponse from api-ai if a domain has generated a response, which we can just
-  // return if we didnt there would be no response.
-  const fulfillment = builder.EntityRecognizer.findEntity(args.entities, 'fulfillment');
-  session.send(fulfillment ? fulfillment.entity : 'Sorry...not sure how to respond to that');
+  session = buildSessionData(session);
+  session.send(buildFulfillment(args));
+  console.log('input.unknown');
 });
