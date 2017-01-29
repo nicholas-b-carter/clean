@@ -60,9 +60,15 @@ intents.matches('input.unknown', (session, args) => {
 });
 
 // this is the onDefault intent method which is part of bot framework
-intents.onDefault((session) => {
+intents.onDefault((session, args) => {
+  console.log(args);
   let data = session.conversationData || [];
   data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
-  session.send('Sorry...can you please rephrase?');
+  // if allowed will show the user is typing thing :)
+  session.sendTyping();
+  // fulfillment is the reponse from api-ai if a domain has generated a response, which we can just
+  // return if we didnt there would be no response.
+  const fulfillment = builder.EntityRecognizer.findEntity(args.entities, 'fulfillment');
+  session.send(fulfillment ? fulfillment.entity : 'Sorry...not sure how to respond to that');
 });
