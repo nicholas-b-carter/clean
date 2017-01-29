@@ -40,8 +40,8 @@ console.log(intents);
 intents.matches('smalltalk.greetings', (session, args) => {
   console.log('smalltalk.greetings');
   // hopefully this lets up persist the session data; session persistence
-  const data = session.conversationData || [];
-  data.push(session.message);
+  let data = session.conversationData || [];
+  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
   // if allowed will show the user is typing thing :)
   session.sendTyping();
@@ -53,17 +53,16 @@ intents.matches('smalltalk.greetings', (session, args) => {
 
 // input.unknown is the action/intent returned from api-ai for this message
 intents.matches('input.unknown', (session, args) => {
-  const data = session.conversationData || [];
-  data.push(session.message);
+  let data = session.conversationData || [];
+  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
   console.log('input.unknown');
 });
 
 // this is the onDefault intent method which is part of bot framework
 intents.onDefault((session) => {
-  console.log('defaulted');
-  const data = session.conversationData || [];
-  data.push(session.message);
+  let data = session.conversationData || [];
+  data = Array.isArray(data) ? data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
   session.send('Sorry...can you please rephrase?');
 });
