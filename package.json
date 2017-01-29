@@ -5,10 +5,19 @@
   "main": "index.js",
   "author": "Nick Carter <nicholas.b.carter@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js *.js --color --fix",
+    "start": "nodemon ./index.js"
+  },
   "dependencies": {
     "api-ai-recognizer": "^1.0.1",
     "botbuilder": "^3.5.4",
     "nodemon": "^1.11.0",
     "restify": "^4.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0"
   }
 }
