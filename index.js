@@ -39,6 +39,8 @@ const buildSessionData = (session) => {
   data = Array.isArray(data) ?
     data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
+  session.conversationId = 'soooootititithghghghghttttttt';
+  console.log(session);
   return session;
 };
 
