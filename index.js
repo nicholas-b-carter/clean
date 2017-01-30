@@ -40,7 +40,7 @@ const buildSessionData = (session) => {
     data.push(session.message) : Object.assign({}, session.message, session.conversationData);
   session.conversationData = data;
   session.conversationId = 'soooootititithghghghghttttttt';
-  console.log(session);
+  session.userId = 'syscosycosycosycosyco';
   return session;
 };
 
@@ -54,16 +54,21 @@ const buildFulfillment = (args) => {
 intents.matches('order.create', (session, { entities }) => {
   session = buildSessionData(session);
   session.sendTyping();
+  if (entities) {
+    const info = builder.EntityRecognizer.findEntity(entities, 'deliveryDate');
+    console.log(info);
 
-  const orderDetails = {
-    deliveryDate: builder.EntityRecognizer.findEntity(entities, 'deliveryDate'),
-  };
-
-  if (orderDetails.deliveryDate) {
-    order.create({ deliveryDate: orderDetails.deliveryDate })
-      .then(response => session.send(response));
+    if (info) {
+      order.create({deliveryDate: info })
+        .then((details) => {
+          console.log(details);
+          session.send(details)
+        });
+    } else {
+      session.send('must have been a mistake');
+    }
   } else {
-    session.send('must have been a mistake');
+    session.send('looks there was an issue')
   }
 });
 
