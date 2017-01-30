@@ -15,6 +15,7 @@
     "bluebird": "^3.4.7",
     "botbuilder": "^3.5.4",
     "nodemon": "^1.11.0",
+    "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "restify": "^4.3.0"
   },
