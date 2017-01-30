@@ -1,5 +1,5 @@
-const rp = require('request-promise');
 const Promise = require('bluebird');
+const rp = require('request-promise');
 
 const getRandomInt = (min, max) => (Math.floor((Math.random() * ((max - min) + 1)) + min));
 
