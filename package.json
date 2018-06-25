@@ -8,7 +8,9 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js *.js --color --fix",
     "dev": "nodemon ./index.js",
-    "deploy": "git commit -am 'automated' && git push && git push heroku master && heroku logs -t"
+    "deploy": "git commit -am 'automated' && git push && git push heroku master && heroku logs -t",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "api-ai-recognizer": "^1.0.1",
@@ -18,7 +20,8 @@
     "nodemon": "^1.11.0",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "snyk": "^1.83.0"
   },
   "devDependencies": {
     "api-ai-recognizer": "^1.0.1",
@@ -30,5 +33,6 @@
     "node": "6.9.4",
     "npm": "3.10.10",
     "yarn": "0.17.10"
-  }
+  },
+  "snyk": true
 }
